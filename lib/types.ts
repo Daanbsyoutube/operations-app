@@ -1,0 +1,8 @@
+export type Priority="low"|"medium"|"high"; export type Daypart="morning"|"afternoon"|"evening";
+export type Area={id:string;name:string;color:string}; export type Task={id:string;title:string;notes?:string;completed:boolean;dueDate?:string;dueTime?:string;priority:Priority;areaId?:string;projectId?:string;starred?:boolean;recurrence?:string;reminder?:boolean;createdAt:string;updatedAt:string};
+export type Routine={id:string;title:string;description?:string;daypart:Daypart;notify:boolean;ongoing:boolean;startDate:string;durationDays?:number;completionDates:string[]};
+export type Milestone={id:string;title:string;completed:boolean}; export type Project={id:string;title:string;description?:string;areaId?:string;endDate?:string;milestones:Milestone[];createdAt:string};
+export type Note={id:string;title?:string;body:string;kind:"note"|"journal"|"quote"|"highlight";createdAt:string;lastTouchedAt:string;resurfaceEnabled:boolean};
+export type PersonInteraction={id:string;type:"call"|"message"|"in-person"|"other";text:string;date:string}; export type Person={id:string;name:string;birthday?:string;facts:string[];interactions:PersonInteraction[]};
+export type InboxItem={id:string;raw:string;reason:string;createdAt:string};
+export type AppData={tasks:Task[];routines:Routine[];projects:Project[];notes:Note[];people:Person[];areas:Area[];inbox:InboxItem[];settings:{staleNoteDays:number;notificationsEnabled:boolean}};
