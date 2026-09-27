@@ -14,11 +14,9 @@ export default function OrganizerApp(){
  const [data,setData]=useState<AppState>(seed),[ready,setReady]=useState(false),[page,setPage]=useState("Today"),[toast,setToast]=useState("");
  const [composer,setComposer]=useState<null|"task"|"note"|"routine"|"project"|"person">(null),[processing,setProcessing]=useState<number|null>(null),[search,setSearch]=useState("");
  const [draft,setDraft]=useState({title:"",text:"",area:"Personal",priority:"medium" as Priority,date:"",part:"Morning" as Routine["part"],description:"",birthday:""});
- const inputRef=useRef<HTMLInputElement>(null);
  useEffect(()=>{try{const x=localStorage.getItem("operations-v1");if(x){const p=JSON.parse(x);setData({...seed,...p,projects:p.projects||[],people:p.people||[]})}}catch{}setReady(true)},[]);
  useEffect(()=>{if(ready)localStorage.setItem("operations-v1",JSON.stringify(data))},[data,ready]);
  useEffect(()=>{const f=(e:KeyboardEvent)=>{if(e.altKey&&e.key.toLowerCase()==="j"){e.preventDefault();openComposer("task")}};addEventListener("keydown",f);return()=>removeEventListener("keydown",f)},[]);
- useEffect(()=>{if(composer)setTimeout(()=>inputRef.current?.focus(),30)},[composer]);
  const open=useMemo(()=>data.tasks.filter(t=>!t.done).sort((a,b)=>(Number(b.star)-Number(a.star))||weight[b.priority]-weight[a.priority]),[data.tasks]);
  const today=new Date().toISOString().slice(0,10),dateLabel=new Intl.DateTimeFormat("nl-NL",{weekday:"long",day:"numeric",month:"long"}).format(new Date());
  const reset=()=>setDraft({title:"",text:"",area:data.areas[0]||"Personal",priority:"medium",date:"",part:"Morning",description:"",birthday:""});
