@@ -3,10 +3,11 @@ import {useEffect,useMemo,useState} from "react";
 type Task={id:string,title:string,done:boolean,priority:"high"|"medium"|"low",area:string,date?:string,star?:boolean};
 type Routine={id:string,title:string,part:"Morning"|"Afternoon"|"Evening",done:boolean,streak:number};
 type Note={id:string,text:string,created:string};
-const seed={tasks:[{id:"1",title:"Try Quick Capture",done:false,priority:"high" as const,area:"Personal",date:new Date().toISOString().slice(0,10)},{id:"2",title:"Star a task to keep it in focus",done:false,priority:"medium" as const,area:"Personal"}],routines:[{id:"r1",title:"Check daily plan",part:"Morning" as const,done:false,streak:0}],notes:[{id:"n1",text:"Resurfacing brings one saved thought back every day.",created:new Date().toISOString()}],areas:["Personal","School","Work","Travel"],inbox:[] as string[]};
+type AppState={tasks:Task[];routines:Routine[];notes:Note[];areas:string[];inbox:string[]};
+const seed:AppState={tasks:[{id:"1",title:"Try Quick Capture",done:false,priority:"high",area:"Personal",date:new Date().toISOString().slice(0,10)},{id:"2",title:"Star a task to keep it in focus",done:false,priority:"medium",area:"Personal"}],routines:[{id:"r1",title:"Check daily plan",part:"Morning",done:false,streak:0}],notes:[{id:"n1",text:"Resurfacing brings one saved thought back every day.",created:new Date().toISOString()}],areas:["Personal","School","Work","Travel"],inbox:[]};
 const weight={high:3,medium:2,low:1};
 export default function OrganizerApp(){
- const [data,setData]=useState(seed); const [ready,setReady]=useState(false); const [page,setPage]=useState("Today"); const [capture,setCapture]=useState(""); const [toast,setToast]=useState("");
+ const [data,setData]=useState<AppState>(seed); const [ready,setReady]=useState(false); const [page,setPage]=useState("Today"); const [capture,setCapture]=useState(""); const [toast,setToast]=useState("");
  useEffect(()=>{try{const x=localStorage.getItem("operations-v1");if(x)setData(JSON.parse(x))}catch{}setReady(true)},[]);
  useEffect(()=>{if(ready)localStorage.setItem("operations-v1",JSON.stringify(data))},[data,ready]);
  useEffect(()=>{const f=(e:KeyboardEvent)=>{if(e.altKey&&e.key.toLowerCase()==="j"){e.preventDefault();(document.querySelector("#capture") as HTMLInputElement)?.focus()}};addEventListener("keydown",f);return()=>removeEventListener("keydown",f)},[]);
